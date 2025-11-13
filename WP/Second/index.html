@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Year Calendar</title>
+  <!-- <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #f4f4f9;
+      color: #333;
+    }
+
+    h1 {
+      margin-top: 20px;
+    }
+
+    input {
+      padding: 8px;
+      font-size: 16px;
+      margin: 10px;
+    }
+
+    button {
+      padding: 8px 16px;
+      font-size: 16px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .calendar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .month {
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background: white;
+      margin: 10px;
+      width: 260px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .month h2 {
+      background-color: #007bff;
+      color: white;
+      padding: 10px;
+      margin: 0;
+      font-size: 18px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      width: 14.28%;
+      text-align: center;
+      padding: 5px;
+    }
+
+    th {
+      background-color: #f0f0f0;
+    }
+
+    td {
+      height: 25px;
+    }
+
+    td.today {
+      background-color: #ffeb3b;
+      border-radius: 50%;
+    }
+  </style> -->
+</head>
+<body>
+
+  <h1>📅 Year Calendar Generator</h1>
+
+  <input type="number" id="yearInput" placeholder="Enter a year" />
+  <button onclick="generateCalendar()">Show Calendar</button>
+
+  <div id="calendar" class="calendar"></div>
+
+  <script>
+    function generateCalendar() {
+      const year = parseInt(document.getElementById('yearInput').value);
+      const calendarDiv = document.getElementById('calendar');
+      calendarDiv.innerHTML = '';
+
+      if (isNaN(year)) {
+        alert("Please enter a valid year!");
+        return;
+      }
+
+      const monthNames = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+      ];
+
+      for (let month = 0; month < 12; month++) {
+        const firstDay = new Date(year, month, 1);
+        const lastDay = new Date(year, month + 1, 0);
+        const daysInMonth = lastDay.getDate();
+
+        let monthHTML = `
+          <div class="month">
+            <h2>${monthNames[month]}</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Su</th>
+                  <th>Mo</th>
+                  <th>Tu</th>
+                  <th>We</th>
+                  <th>Th</th>
+                  <th>Fr</th>
+                  <th>Sa</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+        `;
+
+        // Add blank cells before the first day
+        for (let i = 0; i < firstDay.getDay(); i++) {
+          monthHTML += `<td></td>`;
+        }
+
+        // Fill in days
+        for (let day = 1; day <= daysInMonth; day++) {
+          const currentDate = new Date(year, month, day);
+          monthHTML += `<td>${day}</td>`;
+
+          // Start new row every Saturday
+          if (currentDate.getDay() === 6 && day !== daysInMonth) {
+            monthHTML += `</tr><tr>`;
+          }
+        }
+
+        monthHTML += `
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        `;
+
+        calendarDiv.innerHTML += monthHTML;
+      }
+    }
+  </script>
+
+</body>
+</html>
